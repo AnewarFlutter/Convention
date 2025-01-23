@@ -6,36 +6,51 @@ export default class ContactsController {
    */
 
   async index({ view }: HttpContext) {
+
     return view.render('accueil/contact')
   } 
 
   /**
    * Display form to create a new record
    */
-  async create({}: HttpContext) {}
+
+  async create({}: HttpContext) {
+
+  }
 
   /**
    * Handle form submission for the create action
    */
-  async store({ request }: HttpContext) {}
+  async store({ request  }: HttpContext) {
+
+  }
 
   /**
    * Show individual record
    */
-  async show({ params }: HttpContext) {}
+  async show({ params }: HttpContext) {
+
+  }
 
   /**
    * Edit individual record
    */
-  async edit({ params }: HttpContext) {}
+  async edit({ params }: HttpContext) {
+
+  }
 
   /**
    * Handle form submission for the edit action
    */
-  async update({ params }: HttpContext) {}
+  async update({ params }: HttpContext) {
+
+  }
 
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) {}
+  async destroy({ params }: HttpContext) {
+  
+  }
+
 }
