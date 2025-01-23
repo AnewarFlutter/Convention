@@ -5,6 +5,7 @@ export default class DashboardController {
    * Display a list of resource
    */
   async index({view}: HttpContext) {
+  
     return view.render('entreprise/dashboard')
   }
 

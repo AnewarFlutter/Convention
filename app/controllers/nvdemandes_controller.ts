@@ -6,8 +6,9 @@ export default class NvdemandesController {
    * Display a list of resource
    */
   async index({view}: HttpContext) {
+    var activeNouvelleDemande = true;
 
-    return view.render('entreprise/nouvelle_demande/information_entreprise')
+    return view.render('entreprise/nouvelle_demande/information_entreprise', {activeNouvelleDemande})
   }
 
 

@@ -2,7 +2,22 @@
 
 <body class="g-sidenav-show  bg-gray-100">
 
+  <style>
+    .card-hover {
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
 
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,.1);
+    }
+
+   
+
+    .bg-gradient-success {
+      background-image: linear-gradient(195deg, #66BB6A 0%, #43A047 100%);
+    }
+  </style>
   @include('entreprise/layout/nav_bar')
 
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
@@ -132,55 +147,156 @@
     <div class="container-fluid py-2">
 
       <!------------------ CARD et un mot de bienvenu sur la plate foeme de direction d'emploie qui sera au mileu-------------------------->
-      <div class="row  mt-5 ">
-        <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="card">
-            <div class="card-header p-3">
-              <div class="row">
-                <div class="col-8">
-                  <h5 class="mb-0">Bienvenue sur votre espace Direction de l'Emploi</h5>
-                </div>
-                <div class="col-4 text-end">
-                  <i class="material-symbols-rounded text-success">waving_hand</i>
-                </div>
-              </div>
-            </div>
-            <div class="card-body p-4">
-              <p class="mb-4">
-                Cette plateforme vous permet de gérer efficacement les conventions État-Employeurs pour la promotion de
-                l'emploi des jeunes. Vous pouvez :
-              </p>
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <div class="d-flex">
-                    <i class="material-symbols-rounded text-success me-2">task_alt</i>
-                    <p class="mb-0">Suivre les conventions en cours</p>
+     
+      <!-------------------------------------------->
+
+      <!-- Container principal -->
+      <div class="container-fluid py-4">
+        <div class="row">
+          <!-- Card de bienvenue -->
+          <div class="col-12 mb-4">
+            <div class="card bg-gradient-success overflow-hidden">
+              <div class="card-body p-4">
+                <div class="row">
+                  <div class="col-lg-8">
+                    <h2 class="text-white mb-3">Bienvenue sur votre espace Direction d'Emploi</h2>
+                    <p class="text-white opacity-8 mb-0">
+                      Gérez vos stagiaires et conventions en toute simplicité
+                    </p>
                   </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="d-flex">
-                    <i class="material-symbols-rounded text-success me-2">group</i>
-                    <p class="mb-0">Gérer les partenariats entreprises</p>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="d-flex">
-                    <i class="material-symbols-rounded text-success me-2">analytics</i>
-                    <p class="mb-0">Consulter les statistiques</p>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="d-flex">
-                    <i class="material-symbols-rounded text-success me-2">description</i>
-                    <p class="mb-0">Générer des rapports</p>
+                  <div class="col-lg-4 text-end d-lg-block d-none">
+                    <i class="material-symbols-rounded text-white" style="font-size: 8rem; opacity: 0.3">
+                      dashboard
+                    </i>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
+          <!-- Cartes des fonctionnalités -->
+          <div class="col-12">
+            <div class="row">
+              <!-- Conventions en cours -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card card-hover">
+                  <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                      <div class="icon icon-shape bg-gradient-success shadow-success text-center border-radius-md">
+                        <i class="material-symbols-rounded text-white">task_alt</i>
+                      </div>
+                      <div class="ms-3">
+                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Conventions</p>
+                        <h5 class="font-weight-bolder mb-0">
+                          Demande de convention
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Partenariats -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card card-hover">
+                  <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                      <div class="icon icon-shape bg-gradient-success shadow-success text-center border-radius-md">
+                        <i class="material-symbols-rounded text-white">group</i>
+                      </div>
+                      <div class="ms-3">
+                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Partenariats</p>
+                        <h5 class="font-weight-bolder mb-0">
+                          Direction et Entreprise
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Statistiques -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card card-hover">
+                  <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                      <div class="icon icon-shape bg-gradient-success shadow-success text-center border-radius-md">
+                        <i class="material-symbols-rounded text-white">analytics</i>
+                      </div>
+                      <div class="ms-3">
+                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Statistiques</p>
+                        <h5 class="font-weight-bolder mb-0">
+                          Statistiques et Tableaux de bord
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rapports -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card card-hover">
+                  <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                      <div class="icon icon-shape bg-gradient-success shadow-success text-center border-radius-md">
+                        <i class="material-symbols-rounded text-white">description</i>
+                      </div>
+                      <div class="ms-3">
+                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Rapports</p>
+                        <h5 class="font-weight-bolder mb-0">
+                          Générer et Consulter
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Stagiaires -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card card-hover">
+                  <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                      <div class="icon icon-shape bg-gradient-success shadow-success text-center border-radius-md">
+                        <i class="material-symbols-rounded text-white">school</i>
+                      </div>
+                      <div class="ms-3">
+                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Remplacement</p>
+                        <h5 class="font-weight-bolder mb-0">
+                          Remplacement de stagiaires
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Nouvelle demande -->
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card card-hover">
+                  <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                      <div class="icon icon-shape bg-gradient-success shadow-success text-center border-radius-md">
+                        <i class="material-symbols-rounded text-white">add_circle</i>
+                      </div>
+                      <div class="ms-3">
+                        <p class="text-sm mb-0 text-capitalize font-weight-bold">Renouvellement </p>
+                        <h5 class="font-weight-bolder mb-0">
+                          Renouvellement de convention
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
         </div>
       </div>
-      <!-------------------------------------------->
+
+     
 
       <br>
   
@@ -189,3 +305,5 @@
   </main>
 
   @include('entreprise/layout/script')
+</body>
+</html>
