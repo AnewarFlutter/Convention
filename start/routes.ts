@@ -10,39 +10,63 @@
 import ContactsController from '#controllers/view/contacts_controller'
 import DashboardController from '#controllers/client/dashboard_controller';
 import SessionController from '#controllers/auth/session_controller'
-import NvdemandesController from '#controllers/client/nvdemandes_controller';
+
 import router from '@adonisjs/core/services/router'
+import NvdemandesController from '#controllers/client/nvdemandes_controller';
+import { middleware } from './kernel.js';
 
-router.on('/').render('accueil/index').as('home');
+// Routes publiques
+router.on('/').render('accueil/index').as('home')
+router.get('/login', [SessionController, 'index']).as('login.index')
+router.get('/register', [SessionController, 'register']).as('register.index')
+router.get('/contact', [ContactsController, 'index']).as('contacts.index')
 
-// Corriger la route contacts
-router.get('/contact', [ContactsController, 'index']).as('contacts.index');
+// Routes authentification
+router.post('/register', [SessionController, 'store']).as('register.store')
+router.post('/login', [SessionController, 'login']).as('login.store')
+router.post('/logout', [SessionController, 'logout'])
 
-router.get('/login', [SessionController, 'index']).as('login.index');
-
-router.get('/register', [SessionController, 'register']).as('register.index');
-// Routes authentifiées
+// Routes admin protégées
 router.group(() => {
-    // Déconnexion
-    router.post('/logout', [SessionController, 'logout'])
-
-    // Dashboard
-    router.get('/dashboard', [DashboardController, 'index'])
-      .as('dashboard.index')
-
-    // Informations entreprise
-    router.get('/entreprise/informations', [NvdemandesController, 'index'])
-      .as('entreprise.informations')
-
-    // Documents légaux
-    router.get('/entreprise/documents_legaux', [NvdemandesController, 'documentLegaux'])
-      .as('entreprise.documents_legaux')
-
-    // Effectif entreprise
-    router.get('/entreprise/effectif', [NvdemandesController, 'effectif'])
-      .as('entreprise.effectif')
+  router.get('/admin/dashboard', [DashboardController, 'adminDashboard'])
+    .as('admin.dashboard')
+  // Autres routes admin...
+}).use(middleware.auth()) // Vérifie l'authentification
+.use(middleware.admin()) // Vérifie si admin
 
 
 
-  }).use(auth()) // Application du middleware d'authentification sur tout le groupe
+
+
+
+
+
+
+
+// Routes user protégées 
+router.group(() => {
+  // Dashboard utilisateur
+  router.get('/dashboard', [DashboardController, 'index'])
+    .as('dashboard.index')
+
+  // Informations entreprise
+  router.get('/entreprise/informations', [NvdemandesController, 'index'])
+    .as('entreprise.informations')
+
+  // Documents légaux  
+  router.get('/entreprise/documents_legaux', [NvdemandesController, 'documentLegaux'])
+    .as('entreprise.documents_legaux')
+
+  // Effectif entreprise
+  router.get('/entreprise/effectif', [NvdemandesController, 'effectifEntreprise'])
+    .as('entreprise.effectif')
+})
+.use(middleware.auth()) // Vérifie l'authentification
+.use(middleware.user()) // Vérifie si utilisateur normal
+
+
+
+
+
+
 

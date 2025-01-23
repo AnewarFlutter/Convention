@@ -31,7 +31,7 @@ export default class DashbordsController {
   /**
    * Handle form submission for the edit action
    */
-  async update({ params, request }: HttpContext) {}
+  async update({ params }: HttpContext) {}
 
   /**
    * Delete record
