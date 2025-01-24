@@ -29,7 +29,7 @@ router.get('/contact', [ContactsController, 'index']).as('contacts.index')
 // Routes authentification
 router.post('/register', [RegistersController, 'store']).as('register.store')
 router.post('/login', [LoginController, 'login']).as('login.store')
-router.post('/logout', [LogoutsController, 'logout'])
+router.post('/logout', [LogoutsController, 'logout']).as('logout.store')
 
 // Routes admin protégées
 router.group(() => {

@@ -12,18 +12,16 @@ export default class LoginController {
 
 
    async login({ request, auth, response, session }: HttpContext) {
-     const { email, password } = request.only(['email', 'password'])
-     
      try {
+       const { email, password } = request.only(['email', 'password'])
+       
+       // Vérification des identifiants
        const user = await User.verifyCredentials(email, password)
        
-       if (!user.email_verified_at) {
-         session.flash('warning', 'Veuillez vérifier votre email')
-         return response.redirect().toRoute('verification.otp')
-       }
-  
+       // Connexion directe sans vérification d'email
        await auth.use('web').login(user)
-  
+       
+       // Redirection selon le rôle
        return user.role === 'admin' 
          ? response.redirect('/admin/dashboard')
          : response.redirect('/dashboard')
