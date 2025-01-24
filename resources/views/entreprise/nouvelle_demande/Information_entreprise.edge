@@ -103,7 +103,9 @@
                       <label>Nom de l'entreprise</label>
                       <input type="text" name="nom_entreprise"
                         class="form-control {{ flashMessages.has('errors.nom_entreprise') ? 'is-invalid' : '' }}"
-                        value="{{ flashMessages.get('nom_entreprise', '') }}" required>
+                        value="{{ infoEntreprise.nom_entreprise }}" required>
+
+                        <input type="hidden" name="code_demande" value="{{ infoEntreprise.code_demande }}">
                     </div>
                     @if(flashMessages.has('errors.nom_entreprise'))
                     <div class="text-danger mt-1">{{ flashMessages.get('errors.nom_entreprise') }}</div>
@@ -115,7 +117,7 @@
                       <label>Nom du représentant</label>
                       <input type="text" name="nom_representant"
                         class="form-control {{ flashMessages.has('errors.nom_representant') ? 'is-invalid' : '' }}"
-                        value="{{ flashMessages.get('nom_representant', '') }}" required>
+                        value="{{ infoEntreprise.nom_representant }}" required>
                     </div>
                     @if(flashMessages.has('errors.nom_representant'))
                     <div class="text-danger mt-1">{{ flashMessages.get('errors.nom_representant') }}</div>
@@ -127,7 +129,7 @@
                       <label>Prénom du représentant</label>
                       <input type="text" name="prenom_representant"
                         class="form-control {{ flashMessages.has('errors.prenom_representant') ? 'is-invalid' : '' }}"
-                        value="{{ flashMessages.get('prenom_representant', '') }}" required>
+                        value="{{ infoEntreprise.prenom_representant }}" required>
                     </div>
                     @if(flashMessages.has('errors.prenom_representant'))
                     <div class="text-danger mt-1">{{ flashMessages.get('errors.prenom_representant') }}</div>
@@ -139,7 +141,7 @@
                       <label>Adresse de l'entreprise</label>
                       <input type="text" name="adresse"
                         class="form-control {{ flashMessages.has('errors.adresse') ? 'is-invalid' : '' }}"
-                        value="{{ flashMessages.get('adresse', '') }}" required>
+                        value="{{ infoEntreprise.adresse }}" required>
                     </div>
                     @if(flashMessages.has('errors.adresse'))
                     <div class="text-danger mt-1">{{ flashMessages.get('errors.adresse') }}</div>
@@ -151,7 +153,7 @@
                       <label>Email de l'entreprise</label>
                       <input type="email" name="email"
                         class="form-control {{ flashMessages.has('errors.email') ? 'is-invalid' : '' }}"
-                        value="{{ flashMessages.get('email', '') }}" required>
+                        value="{{ infoEntreprise.email }}" required>
                     </div>
                     @if(flashMessages.has('errors.email'))
                     <div class="text-danger mt-1">{{ flashMessages.get('errors.email') }}</div>
@@ -162,7 +164,7 @@
                       <label>Numéros de téléphone</label>
                       <input type="tel" name="telephone"
                         class="form-control {{ flashMessages.has('errors.telephone') ? 'is-invalid' : '' }}"
-                        value="{{ flashMessages.get('telephone', '') }}" pattern="[0-9]{9}" required>
+                        value="{{ infoEntreprise.telephone }}" pattern="[0-9]{9}" required>
                     </div>
                     @if(flashMessages.has('errors.telephone'))
                     <div class="text-danger mt-1">{{ flashMessages.get('errors.telephone') }}</div>

@@ -9,13 +9,13 @@ export default class extends BaseSchema {
       table.increments('id')
       
       // Informations de l'entreprise (Formulaire 1)
-      table.string('idUser').notNullable()
-      table.string('codeDemande').notNullable()
+      table.string('id_user').notNullable()
+      table.string('code_demande').notNullable()
       table.string('nom_entreprise').nullable()
       table.string('nom_representant').nullable()
       table.string('prenom_representant').nullable() 
       table.string('adresse').nullable()
-      table.string('email').nullable().unique()
+      table.string('email').nullable()
       table.string('telephone', 9).nullable()
 
       // Documents légaux (Formulaire 2)
@@ -23,6 +23,7 @@ export default class extends BaseSchema {
       table.string('ninea_file').nullable() // Chemin du fichier
       table.string('declaration_file').nullable() // Chemin du fichier
       table.date('date_adhesion').nullable()
+      table.integer('renouvellement').nullable() // En attente, Validé, Refusé
       
       // Clés étrangères
       table.integer('forme_juridique_id')
