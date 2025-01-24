@@ -9,26 +9,31 @@
 
 import ContactsController from '#controllers/view/contacts_controller'
 import DashboardController from '#controllers/client/dashboard_controller';
-import SessionController from '#controllers/auth/session_controller'
+
+
 
 import router from '@adonisjs/core/services/router'
 import NvdemandesController from '#controllers/client/nvdemandes_controller';
 import { middleware } from './kernel.js';
+import DashboardAdminsController from '#controllers/admin/dashboard_admins_controller';
+import LoginController from '#controllers/auth/login_controller';
+import RegistersController from '#controllers/auth/registers_controller';
+import LogoutsController from '#controllers/auth/logouts_controller';
 
 // Routes publiques
 router.on('/').render('accueil/index').as('home')
-router.get('/login', [SessionController, 'index']).as('login.index')
-router.get('/register', [SessionController, 'register']).as('register.index')
+router.get('/login', [LoginController, 'index']).as('login.index')
+router.get('/register', [RegistersController, 'index']).as('register.index')
 router.get('/contact', [ContactsController, 'index']).as('contacts.index')
 
 // Routes authentification
-router.post('/register', [SessionController, 'store']).as('register.store')
-router.post('/login', [SessionController, 'login']).as('login.store')
-router.post('/logout', [SessionController, 'logout'])
+router.post('/register', [RegistersController, 'store']).as('register.store')
+router.post('/login', [LoginController, 'login']).as('login.store')
+router.post('/logout', [LogoutsController, 'logout'])
 
 // Routes admin protégées
 router.group(() => {
-  router.get('/admin/dashboard', [DashboardController, 'adminDashboard'])
+  router.get('/admin/dashboard', [DashboardAdminsController, 'index'])
     .as('admin.dashboard')
   // Autres routes admin...
 }).use(middleware.auth()) // Vérifie l'authentification

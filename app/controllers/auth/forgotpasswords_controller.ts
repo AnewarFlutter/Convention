@@ -1,12 +1,11 @@
 import type { HttpContext } from '@adonisjs/core/http'
 
-export default class LoginController {
+export default class ForgotpasswordsController {
   /**
    * Display a list of resource
    */
-  async index({ view }: HttpContext) {
-    return view.render('auth.login')
-  }
+  async index({}: HttpContext) {}
+
   /**
    * Display form to create a new record
    */

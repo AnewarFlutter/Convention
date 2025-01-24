@@ -1,8 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 
-
-
-export default class DashbordsController {
+export default class DashboardAdminsController {
   /**
    * Display a list of resource
    */
