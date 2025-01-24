@@ -58,13 +58,14 @@ router.group(() => {
   router.get('/entreprise/informations', [NvdemandesController, 'index'])
     .as('entreprise.informations')
 
+
+  // Informations entreprise
+
+  router.post('/entreprise/store', [NvdemandesController, 'storeInfomationEntreprise'])
+    .as('entreprise.informations.store')
   // Documents légaux  
   router.get('/entreprise/documents_legaux', [NvdemandesController, 'documentLegaux'])
     .as('entreprise.documents_legaux')
- 
-    // Entreprise Store
-
-  router.post('/entreprise/store/information', [NvdemandesController, 'storeInformationEntreprise']).as('entreprise.store.information')
  
 
   // Effectif entreprise

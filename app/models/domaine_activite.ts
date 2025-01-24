@@ -5,6 +5,12 @@ export default class DomaineActivite extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
+  @column()
+  declare code: string
+
+  @column()
+  declare libelle: string
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
