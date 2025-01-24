@@ -2,28 +2,29 @@
 
 
 <body class="g-sidenav-show  bg-gray-100">
-    <style>
-        /* Modification des couleurs pour le focus et les états des champs */
-        .input-group.input-group-static.is-focused label,
-        .input-group.input-group-dynamic.is-focused label {
-          color: #4CAF50 !important; /* Vert au lieu du rose */
-        }
-        
-        .input-group.input-group-static.is-focused .form-control,
-        .input-group.input-group-dynamic.is-focused .form-control {
-          border-color: #4CAF50 !important;
-          background-image: linear-gradient(0deg, #4CAF50 2px, rgba(156, 39, 176, 0) 0), linear-gradient(0deg, #d2d2d2 1px, hsla(0, 0%, 82%, 0) 0) !important;
-        }
-        
-        /* Style pour les champs valides */
-        .input-group.is-valid label {
-          color: #4CAF50 !important;
-        }
-        
-        .input-group.is-valid .form-control {
-          border-color: #4CAF50 !important;
-        }
-        </style>
+  <style>
+    /* Modification des couleurs pour le focus et les états des champs */
+    .input-group.input-group-static.is-focused label,
+    .input-group.input-group-dynamic.is-focused label {
+      color: #4CAF50 !important;
+      /* Vert au lieu du rose */
+    }
+
+    .input-group.input-group-static.is-focused .form-control,
+    .input-group.input-group-dynamic.is-focused .form-control {
+      border-color: #4CAF50 !important;
+      background-image: linear-gradient(0deg, #4CAF50 2px, rgba(156, 39, 176, 0) 0), linear-gradient(0deg, #d2d2d2 1px, hsla(0, 0%, 82%, 0) 0) !important;
+    }
+
+    /* Style pour les champs valides */
+    .input-group.is-valid label {
+      color: #4CAF50 !important;
+    }
+
+    .input-group.is-valid .form-control {
+      border-color: #4CAF50 !important;
+    }
+  </style>
 
   @include('entreprise/layout/nav_bar')
 
@@ -33,20 +34,20 @@
       data-scroll="true">
       <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-                <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Nouvelle demande</a>
-                </li>
-                <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Etape 1</li>
-            </ol>
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Nouvelle demande</a>
+            </li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Etape 1</li>
+          </ol>
         </nav>
-      @include('entreprise/components/nav_header')
+        @include('entreprise/components/nav_header')
       </div>
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-2">
 
       <!------------------ 5 card avec ecrit a l'interieure Etape 1 ; Etape 2 etc pour montrer ou on en est-------------------------->
-   
+
 
       <div class="row mt-4">
         <!-- Cards d'étapes -->
@@ -59,7 +60,7 @@
                 <p class="text-xs text-white mb-0">Information entreprise</p>
               </div>
             </div>
-            
+
             <!-- Autres étapes en gris -->
             <div class="card col-2">
               <div class="card-body text-center p-3">
@@ -70,7 +71,7 @@
             <!-- Répéter pour étapes 3-5 -->
           </div>
         </div>
-      
+
         <!-- Formulaire -->
         <div class="col-12">
           <div class="card">
@@ -78,49 +79,96 @@
               <h5 class="mb-0">Informations de l'entreprise</h5>
             </div>
             <div class="card-body p-4">
-              <form>
+              @if(flashMessages.has('success'))
+              <div class="alert alert-success">
+                {{ flashMessages.get('success') }}
+              </div>
+              @endif
+
+              @if(flashMessages.has('errors'))
+              <div class="alert alert-danger">
+                <ul>
+                  @each(error in flashMessages.get('errors'))
+                  <li>{{ error }}</li>
+                  @endeach
+                </ul>
+              </div>
+              @endif
+              <form action="{{ route('entreprise.informations.store') }}" method="POST">
+                {{ csrfField() }}
+
                 <div class="row">
                   <div class="col-md-12 mb-3">
                     <div class="input-group input-group-static">
                       <label>Nom de l'entreprise</label>
-                      <input type="text" class="form-control" required>
+                      <input type="text" name="nom_entreprise"
+                        class="form-control {{ flashMessages.has('errors.nom_entreprise') ? 'is-invalid' : '' }}"
+                        value="{{ flashMessages.get('nom_entreprise', '') }}" required>
                     </div>
+                    @if(flashMessages.has('errors.nom_entreprise'))
+                    <div class="text-danger mt-1">{{ flashMessages.get('errors.nom_entreprise') }}</div>
+                    @endif
                   </div>
-      
+
                   <div class="col-md-6 mb-3">
                     <div class="input-group input-group-static">
                       <label>Nom du représentant</label>
-                      <input type="text" class="form-control" required>
+                      <input type="text" name="nom_representant"
+                        class="form-control {{ flashMessages.has('errors.nom_representant') ? 'is-invalid' : '' }}"
+                        value="{{ flashMessages.get('nom_representant', '') }}" required>
                     </div>
+                    @if(flashMessages.has('errors.nom_representant'))
+                    <div class="text-danger mt-1">{{ flashMessages.get('errors.nom_representant') }}</div>
+                    @endif
                   </div>
-      
+
                   <div class="col-md-6 mb-3">
                     <div class="input-group input-group-static">
                       <label>Prénom du représentant</label>
-                      <input type="text" class="form-control" required>
+                      <input type="text" name="prenom_representant"
+                        class="form-control {{ flashMessages.has('errors.prenom_representant') ? 'is-invalid' : '' }}"
+                        value="{{ flashMessages.get('prenom_representant', '') }}" required>
                     </div>
+                    @if(flashMessages.has('errors.prenom_representant'))
+                    <div class="text-danger mt-1">{{ flashMessages.get('errors.prenom_representant') }}</div>
+                    @endif
                   </div>
-      
+
                   <div class="col-md-12 mb-3">
                     <div class="input-group input-group-static">
                       <label>Adresse de l'entreprise</label>
-                      <input type="text" class="form-control" required>
+                      <input type="text" name="adresse"
+                        class="form-control {{ flashMessages.has('errors.adresse') ? 'is-invalid' : '' }}"
+                        value="{{ flashMessages.get('adresse', '') }}" required>
                     </div>
+                    @if(flashMessages.has('errors.adresse'))
+                    <div class="text-danger mt-1">{{ flashMessages.get('errors.adresse') }}</div>
+                    @endif
                   </div>
-      
+
                   <div class="col-md-6 mb-3">
                     <div class="input-group input-group-static">
                       <label>Email de l'entreprise</label>
-                      <input type="email" class="form-control" required>
+                      <input type="email" name="email"
+                        class="form-control {{ flashMessages.has('errors.email') ? 'is-invalid' : '' }}"
+                        value="{{ flashMessages.get('email', '') }}" required>
                     </div>
+                    @if(flashMessages.has('errors.email'))
+                    <div class="text-danger mt-1">{{ flashMessages.get('errors.email') }}</div>
+                    @endif
                   </div>
                   <div class="col-md-6 mb-3">
                     <div class="input-group input-group-static">
                       <label>Numéros de téléphone</label>
-                      <input type="text" class="form-control" required>
+                      <input type="tel" name="telephone"
+                        class="form-control {{ flashMessages.has('errors.telephone') ? 'is-invalid' : '' }}"
+                        value="{{ flashMessages.get('telephone', '') }}" pattern="[0-9]{9}" required>
                     </div>
+                    @if(flashMessages.has('errors.telephone'))
+                    <div class="text-danger mt-1">{{ flashMessages.get('errors.telephone') }}</div>
+                    @endif
                   </div>
-      
+
                   <div class="col-12 text-end">
                     <button type="submit" class="btn btn-success">
                       Suivant
@@ -133,8 +181,8 @@
           </div>
         </div>
       </div>
-  
-    @include('entreprise/components/footer')
+
+      @include('entreprise/components/footer')
     </div>
   </main>
 

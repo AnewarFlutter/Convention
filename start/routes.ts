@@ -61,6 +61,11 @@ router.group(() => {
   // Documents légaux  
   router.get('/entreprise/documents_legaux', [NvdemandesController, 'documentLegaux'])
     .as('entreprise.documents_legaux')
+ 
+    // Entreprise Store
+
+  router.post('/entreprise/store/information', [NvdemandesController, 'storeInformationEntreprise']).as('entreprise.store.information')
+ 
 
   // Effectif entreprise
   router.get('/entreprise/effectif', [NvdemandesController, 'effectifEntreprise'])

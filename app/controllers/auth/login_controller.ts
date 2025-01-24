@@ -27,7 +27,7 @@ export default class LoginController {
          : response.redirect('/dashboard')
   
      } catch (error) {
-       session.flash('errors', { login: 'Identifiants invalides' })
+       session.flash('errors', { login: 'Email ou mot de passe invalide' })
        return response.redirect().back()
      }
    }

@@ -1,7 +1,7 @@
 @include('entreprise/layout/header')
 
 
-<body class="g-sidenav-show  bg-gray-100">
+<body class="g-sidenav-show  bg-gray-100"></body>
     <style>
         /* Modification des couleurs pour le focus et les états des champs */
         .input-group.input-group-static.is-focused label,
@@ -130,126 +130,151 @@
                 <h5 class="mb-0">Documents légaux de l'entreprise</h5>
             </div>
             <div class="card-body p-4">
-                <form>
-                    <div class="row">
-                      <!-- RCCM Upload -->
-                      <div class="col-md-12 mb-4">
-                        <div class="card">
-                          <div class="card-header p-3 bg-light">
-                            <h6 class="mb-0">RCCM (Obligatoire)</h6>
-                          </div>
-                          <div class="card-body p-3">
-                            <div class="input-group input-group-static">
-                              <div class="file-upload-wrapper">
-                                <input type="file" class="form-control" id="rccmFile" accept=".pdf,.jpg,.jpeg,.png" required>
-                                <label for="rccmFile" class="file-upload-btn">
-                                  <i class="material-symbols-rounded">upload_file</i>
-                                  <span class="file-upload-text">Choisir un fichier</span>
-                                </label>
-                                <div class="file-name-display"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+              <form action="" method="POST" enctype="multipart/form-data">
+                {{ csrfField() }}
+                <div class="row">
+                  <!-- RCCM Upload -->
+                  <div class="col-md-12 mb-4">
+                    <div class="card">
+                      <div class="card-header p-3 bg-light">
+                        <h6 class="mb-0">RCCM (Obligatoire)</h6>
                       </div>
-                  
-                      <!-- NINEA Upload -->
-                      <div class="col-md-12 mb-4">
-                        <div class="card">
-                          <div class="card-header p-3 bg-light">
-                            <h6 class="mb-0">NINEA (Obligatoire)</h6>
-                          </div>
-                          <div class="card-body p-3">
-                            <div class="input-group input-group-static">
-                              <div class="file-upload-wrapper">
-                                <input type="file" class="form-control" id="rccmFile" accept=".pdf,.jpg,.jpeg,.png" required>
-                                <label for="rccmFile" class="file-upload-btn">
-                                  <i class="material-symbols-rounded">upload_file</i>
-                                  <span class="file-upload-text">Choisir un fichier</span>
-                                </label>
-                                <div class="file-name-display"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                  
-                      <!-- Déclaration d'établissement Upload -->
-                      <div class="col-md-12 mb-4">
-                        <div class="card">
-                          <div class="card-header p-3 bg-light">
-                            <h6 class="mb-0">Déclaration d'établissement (Obligatoire)</h6>
-                          </div>
-                          <div class="card-body p-3">
-                            <div class="input-group input-group-static">
-                              <div class="file-upload-wrapper">
-                                <input type="file" class="form-control" id="rccmFile" accept=".pdf,.jpg,.jpeg,.png" required>
-                                <label for="rccmFile" class="file-upload-btn">
-                                  <i class="material-symbols-rounded">upload_file</i>
-                                  <span class="file-upload-text">Choisir un fichier</span>
-                                </label>
-                                <div class="file-name-display"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                  
-                      <!-- Date d'adhésion -->
-                      <div class="col-md-12 mb-4">
+                      <div class="card-body p-3">
                         <div class="input-group input-group-static">
-                          <label>Date d'adhésion</label>
-                          <input type="date" class="form-control" disabled value="{{new Date().toISOString().split('T')[0]}}">
+                          <div class="file-upload-wrapper">
+                            <input type="file" 
+                                   class="form-control" 
+                                   id="rccmFile" 
+                                   name="rccm_file"
+                                   accept=".pdf,.jpg,.jpeg,.png" 
+                                   required>
+                            <label for="rccmFile" class="file-upload-btn">
+                              <i class="material-symbols-rounded">upload_file</i>
+                              <span class="file-upload-text">Choisir un fichier</span>
+                            </label>
+                            <div class="file-name-display"></div>
+                          </div>
                         </div>
-                      </div>
-                  
-                      <!-- Forme juridique -->
-                      <div class="col-md-12 mb-4">
-                        <div class="input-group input-group-static">
-                          <label>Forme juridique</label>
-                          <select class="form-control" required>
-                            <option value="">Sélectionner une forme juridique</option>
-                            <option value="EI">Entreprise individuelle (EI)</option>
-                            <option value="SARL">Société à responsabilité limitée (SARL)</option>
-                            <option value="SA">Société anonyme (SA)</option>
-                            <option value="GIE">Groupement d'intérêt économique (GIE)</option>
-                          </select>
-                        </div>
-                      </div>
-                  
-                      <!-- Domaine d'activité -->
-                      <div class="col-md-12 mb-4">
-                        <div class="input-group input-group-static">
-                          <label>Domaine d'activité</label>
-                          <select class="form-control" id="domaineSelect" onchange="toggleAutreDomaine()" required>
-                            <option value="">Sélectionner un domaine</option>
-                            <option value="agriculture">Agriculture</option>
-                            <option value="industrie">Industrie</option>
-                            <option value="services">Services</option>
-                            <option value="commerce">Commerce</option>
-                            <option value="autre">Autre</option>
-                          </select>
-                        </div>
-                      </div>
-                  
-                      <!-- Autre domaine (caché par défaut) -->
-                      <div class="col-md-12 mb-4" id="autreDomaine" style="display: none;">
-                        <div class="input-group input-group-static">
-                          <label>Préciser le domaine</label>
-                          <input type="text" class="form-control">
-                        </div>
-                      </div>
-                  
-                      <div class="col-12 text-end">
-                        <button type="submit" class="btn btn-success">
-                          Suivant
-                          <i class="material-symbols-rounded ms-2">arrow_forward</i>
-                        </button>
                       </div>
                     </div>
-                  </form>
-                  
-                  
+                  </div>
+    
+                  <!-- NINEA Upload -->
+                  <div class="col-md-12 mb-4">
+                    <div class="card">
+                      <div class="card-header p-3 bg-light">
+                        <h6 class="mb-0">NINEA (Obligatoire)</h6>
+                      </div>
+                      <div class="card-body p-3">
+                        <div class="input-group input-group-static">
+                          <div class="file-upload-wrapper">
+                            <input type="file" 
+                                   class="form-control" 
+                                   id="nineaFile" 
+                                   name="ninea_file"
+                                   accept=".pdf,.jpg,.jpeg,.png" 
+                                   required>
+                            <label for="nineaFile" class="file-upload-btn">
+                              <i class="material-symbols-rounded">upload_file</i>
+                              <span class="file-upload-text">Choisir un fichier</span>
+                            </label>
+                            <div class="file-name-display"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+    
+                  <!-- Déclaration d'établissement -->
+                  <div class="col-md-12 mb-4">
+                    <div class="card">
+                      <div class="card-header p-3 bg-light">
+                        <h6 class="mb-0">Déclaration d'établissement (Obligatoire)</h6>
+                      </div>
+                      <div class="card-body p-3">
+                        <div class="input-group input-group-static">
+                          <div class="file-upload-wrapper">
+                            <input type="file" 
+                                   class="form-control" 
+                                   id="declarationFile" 
+                                   name="declaration_file"
+                                   accept=".pdf,.jpg,.jpeg,.png" 
+                                   required>
+                            <label for="declarationFile" class="file-upload-btn">
+                              <i class="material-symbols-rounded">upload_file</i>
+                              <span class="file-upload-text">Choisir un fichier</span>
+                            </label>
+                            <div class="file-name-display"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+    
+                  <!-- Date d'adhésion -->
+                  <div class="col-md-12 mb-4">
+                    <div class="input-group input-group-static">
+                      <label>Date d'adhésion</label>
+                      <input type="date" 
+                             name="date_adhesion"
+                             class="form-control" 
+                             value="{{new Date().toISOString().split('T')[0]}}" 
+                             readonly>
+                    </div>
+                  </div>
+    
+                  <!-- Forme juridique -->
+                  <div class="col-md-12 mb-4">
+                    <div class="input-group input-group-static">
+                      <label>Forme juridique</label>
+                      <select class="form-control" name="forme_juridique" required>
+                        <option value="">Sélectionner une forme juridique</option>
+                        <option value="EI">Entreprise individuelle (EI)</option>
+                        <option value="SARL">Société à responsabilité limitée (SARL)</option>
+                        <option value="SA">Société anonyme (SA)</option>
+                        <option value="GIE">Groupement d'intérêt économique (GIE)</option>
+                      </select>
+                    </div>
+                  </div>
+    
+                  <!-- Domaine d'activité -->
+                  <div class="col-md-12 mb-4">
+                    <div class="input-group input-group-static">
+                      <label>Domaine d'activité</label>
+                      <select class="form-control" 
+                              id="domaineSelect" 
+                              name="domaine_activite"
+                              onchange="toggleAutreDomaine()" 
+                              required>
+                        <option value="">Sélectionner un domaine</option>
+                        <option value="agriculture">Agriculture</option>
+                        <option value="industrie">Industrie</option>
+                        <option value="services">Services</option>
+                        <option value="commerce">Commerce</option>
+                        <option value="autre">Autre</option>
+                      </select>
+                    </div>
+                  </div>
+    
+                  <!-- Autre domaine -->
+                  <div class="col-md-12 mb-4" id="autreDomaine" style="display: none;">
+                    <div class="input-group input-group-static">
+                      <label>Préciser le domaine</label>
+                      <input type="text" 
+                             name="autre_domaine"
+                             class="form-control">
+                    </div>
+                  </div>
+    
+                  <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-success">
+                      Suivant
+                      <i class="material-symbols-rounded ms-2">arrow_forward</i>
+                    </button>
+                  </div>
+    
+                </div>
+              </form>
             </div>
           </div>
         </div>
