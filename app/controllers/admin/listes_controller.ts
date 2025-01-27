@@ -1,13 +1,12 @@
 import type { HttpContext } from '@adonisjs/core/http'
 
-export default class DashboardAdminsController {
+export default class ListesController {
   /**
    * Display a list of resource
    */
   async index({view}: HttpContext) {
-
-  
-    return view.render('admin/dashboard')
+    var activeNouvelleDemande = true;
+    return view.render('admin/listes/view_listes', {activeNouvelleDemande})
   }
 
   /**

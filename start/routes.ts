@@ -22,6 +22,7 @@ import LogoutsController from '#controllers/auth/logouts_controller';
 import InformationEntreprisesController from '#controllers/client/information_entreprises_controller';
 import DocumentLegauxesController from '#controllers/client/document_legauxes_controller';
 import EffectifEntreprisesController from '#controllers/client/effectif_entreprises_controller';
+import ListesController from '#controllers/admin/listes_controller';
 
 // Routes publiques
 router.on('/').render('accueil/index').as('home')
@@ -39,6 +40,11 @@ router.group(() => {
   router.get('/admin/dashboard', [DashboardAdminsController, 'index'])
     .as('admin.dashboard')
   // Autres routes admin...
+
+  router.get('/admin/listes', [ListesController, 'index']).as('admin.listes')
+
+
+
 }).use(middleware.auth()) // Vérifie l'authentification
 .use(middleware.admin()) // Vérifie si admin
 
