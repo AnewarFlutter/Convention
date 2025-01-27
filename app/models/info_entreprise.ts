@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
-import FormeJuridique from './forme_juridique.js'
-import DomaineActivite from './domaine_activite.js'
+import FormeJuridique from './forme_juridiques.js'
+import DomaineActivite from './domaines_activites.js'
 
 export default class InfoEntreprise extends BaseModel {
   @column({ isPrimary: true })

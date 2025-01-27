@@ -63,14 +63,28 @@ router.group(() => {
 
   router.post('/entreprise/store', [NvdemandesController, 'storeInfomationEntreprise'])
     .as('entreprise.informations.store')
+
+
+
+
   // Documents légaux  
   router.get('/entreprise/documents_legaux', [NvdemandesController, 'documentLegaux'])
     .as('entreprise.documents_legaux')
+
+  // Documents légaux
+
+  router.post('/entreprise/documents_legaux/store', [NvdemandesController, 'storeDocumentLegaux'])
+    .as('entreprise.documents_legaux.store')
  
 
   // Effectif entreprise
   router.get('/entreprise/effectif', [NvdemandesController, 'effectifEntreprise'])
     .as('entreprise.effectif')
+
+  // Ajouter cette nouvelle route
+  router.post('/entreprise/effectif/store', [NvdemandesController, 'storeEffectifEntreprise'])
+    .as('entreprise.effectif.store')
+
 })
 .use(middleware.auth()) // Vérifie l'authentification
 .use(middleware.user()) // Vérifie si utilisateur normal

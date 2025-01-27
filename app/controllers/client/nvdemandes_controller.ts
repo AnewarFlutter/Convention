@@ -1,7 +1,14 @@
 import InfoEntreprise from '#models/info_entreprise';
+import { Application } from '@adonisjs/core/app';
+import app from '@adonisjs/core/services/app'
+
 import type { HttpContext } from '@adonisjs/core/http'
 
 import { schema, validator ,rules} from '@adonisjs/validator'
+import FormeJuridique from '#models/forme_juridiques';
+import DomaineActivite from '#models/domaines_activites';
+import domaines_activites from '#models/domaines_activites';
+import forme_juridiques from '#models/forme_juridiques';
 
 
 export default class NvdemandesController {
@@ -117,22 +124,210 @@ export default class NvdemandesController {
   //================================================================================================
 
   async documentLegaux({view}: HttpContext) {
-    var activeNouvelleDemande = true;
+    try {
+      const activeNouvelleDemande = true;
+      var formesJuridiques = await forme_juridiques.all();
+      var domainesActivites = await domaines_activites.all();
+     
+      return view.render('entreprise/nouvelle_demande/document_legaux', {
+        activeNouvelleDemande,
+        formesJuridiques,  // Utiliser le même nom que dans la vue
+        domainesActivites,  // Utiliser le même nom que dans la vue
+      });
   
-    return view.render('entreprise/nouvelle_demande/document_legaux', { activeNouvelleDemande })
+    } catch (error) {
+      console.error('Erreur lors du chargement des données:', error);
+      throw error;
+    }
   }
 
+
+  async storeDocumentLegaux({ request, response, session, auth }: HttpContext) {
+    try {
+      const user = auth.user!
+  
+      // Gérer les fichiers uploadés 
+      const rccmFile = request.file('rccm_file')
+      const nineaFile = request.file('ninea_file')
+      const declarationFile = request.file('declaration_file')
+  
+      // Validation des données
+      try {
+        await validator.validate({
+          schema: schema.create({
+            forme_juridique: schema.string(),
+            domaine_activite: schema.string(),
+            date_adhesion: schema.date(),
+            autre_domaine: schema.string.optional()
+          }),
+          data: request.only([
+            'forme_juridique',
+            'domaine_activite', 
+            'date_adhesion',
+            'autre_domaine'
+          ])
+        })
+      } catch (error) {
+        session.flash('errors', error.messages)
+        return response.redirect().back()
+      }
+  
+      // Déplacer les fichiers dans public/assets/uploads
+      const uploadPath = 'uploads/documents'
+      
+      if (rccmFile) {
+        await rccmFile.move(app.publicPath(uploadPath), {
+          name: `rccm_${Date.now()}.${rccmFile.extname}`
+        })
+      }
+  
+      if (nineaFile) {
+        await nineaFile.move(app.publicPath(uploadPath), {
+          name: `ninea_${Date.now()}.${nineaFile.extname}`
+        })
+      }
+  
+      if (declarationFile) {
+        await declarationFile.move(app.publicPath(uploadPath), {
+          name: `declaration_${Date.now()}.${declarationFile.extname}`
+        })
+      }
+  
+      // Mettre à jour l'enregistrement avec les chemins des fichiers
+      await InfoEntreprise.query()
+        .where('id_user', user.id.toString())
+        .where('renouvellement', 0)
+        .orderBy('created_at', 'desc')
+        .first()
+        .then((infoEntreprise) => {
+          if (infoEntreprise) {
+            infoEntreprise.merge({
+              rccm_file: rccmFile ? `${uploadPath}/${rccmFile.fileName}` : '',
+              ninea_file: nineaFile ? `${uploadPath}/${nineaFile.fileName}` : '',
+              declaration_file: declarationFile ? `${uploadPath}/${declarationFile.fileName}` : '',
+              forme_juridique_id: request.input('forme_juridique'),
+              domaine_activite_id: request.input('domaine_activite'),
+              autre_domaine: request.input('autre_domaine'),
+              date_adhesion: request.input('date_adhesion')
+            })
+            return infoEntreprise.save()
+          }
+        })
+  
+      session.flash('success', "Les documents ont été enregistrés avec succès")
+      return response.redirect().toRoute('entreprise.effectif')
+  
+    } catch (error) {
+      console.error(error)
+      session.flash('errors', {
+        error: "Une erreur est survenue lors de l'enregistrement des documents"
+      })
+      return response.redirect().back()
+    }
+  }
+
+  //================================================================================================
 
   async effectifEntreprise({view}: HttpContext) {
 
     return view.render('entreprise/nouvelle_demande/information_effectif')
   }
 
-  async recapitulatifInfo({view}: HttpContext) {
+  async storeEffectifEntreprise({  request, response, session, auth }: HttpContext) {
+    try {
+      const user = auth.user!
+  
+      // Validation des données
+      try {
+        await validator.validate({
+          schema: schema.create({
+            nb_cdi: schema.number(),
+            nb_cdd: schema.number(),
+            quitus_fiscal: schema.string(),
+            quitus_social: schema.string(),
+            nb_stagiaires: schema.number(),
+            profils_recherches: schema.string(),
+            carte_identite: schema.string()
+          }),
+          data: request.only([
+            'nb_cdi',
+            'nb_cdd',
+            'quitus_fiscal',
+            'quitus_social',
+            'nb_stagiaires',
+            'profils_recherches',
+            'carte_identite'
+          ])
+        })
+      } catch (error) {
+        session.flash('errors', error.messages)
+        return response.redirect().back()
+      }
+  
+      // Gérer les fichiers uploadés 
+      const quitusFiscal = request.file('quitus_fiscal')
+      const quitusSocial = request.file('quitus_social')
+      const carteIdentite = request.file('carte_identite')
+  
+      // Déplacer les fichiers dans public/assets/uploads
+      const uploadPath = 'uploads/documents'
+  
+      if (quitusFiscal) {
+        await quitusFiscal.move(app.publicPath(uploadPath), {
+          name: `quitus_fiscal_${Date.now()}.${quitusFiscal.extname}`
+        })
+      }
+  
+      if (quitusSocial) {
+        await quitusSocial.move(app.publicPath(uploadPath), {
+          name: `quitus_social_${Date.now()}.${quitusSocial.extname}`
+        })
+      }
+  
+      if (carteIdentite) {
+        await carteIdentite.move(app.publicPath(uploadPath), {
+          name: `carte_identite_${Date.now()}.${carteIdentite.extname}`
+        })
+      }
+  
+      // Mettre à jour l'enregistrement avec les chemins des fichiers
+      await InfoEntreprise.query()
+        .where('id_user', user.id.toString())
+        .where('renouvellement', 0)
+        .orderBy('created_at', 'desc')
+        .first()
+        .then((infoEntreprise) => {
+          if (infoEntreprise) {
+            infoEntreprise.merge({
+              nb_cdi: request.input('nb_cdi'),
+              nb_cdd: request.input('nb_cdd'),
+              quitus_fiscal: quitusFiscal ? `${uploadPath}/${quitusFiscal.fileName}` : '',
+              quitus_social: quitusSocial ? `${uploadPath}/${quitusSocial.fileName}` : '',
+              nb_stagiaires: request.input('nb_stagiaires'),
+              profils_recherches: request.input('profils_recherches'),
+              carte_identite: carteIdentite ? `${uploadPath}/${carteIdentite.fileName}` : ''
+            })
+            return infoEntreprise.save()
+          }
+        }
+      )
 
-    return view.render('entreprise/nouvelle_demande/recapitulatif_info')
+      session.flash('success', "Les informations ont été enregistrées avec succès")
+      return response.redirect().toRoute('entreprise.recapitulatif')
+
+    } catch (error) {
+      console.error(error)
+      session.flash('errors', {
+        error: "Une erreur est survenue lors de l'enregistrement des informations"
+      })
+      return response.redirect().back()
+    }
+
   }
-
+async recapitulatif({view}: HttpContext) {
+  
+  return view.render('entreprise/nouvelle_demande/recapitulatif_info')
+}
    
   /**
    * Display form to create a new record

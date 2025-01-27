@@ -130,7 +130,7 @@
                 <h5 class="mb-0">Documents légaux de l'entreprise</h5>
             </div>
             <div class="card-body p-4">
-              <form action="" method="POST" enctype="multipart/form-data">
+              <form action="{{ route('entreprise.documents_legaux.store') }}" method="POST" enctype="multipart/form-data">
                 {{ csrfField() }}
                 <div class="row">
                   <!-- RCCM Upload -->
@@ -228,11 +228,10 @@
                     <div class="input-group input-group-static">
                       <label>Forme juridique</label>
                       <select class="form-control" name="forme_juridique" required>
-                        <option value="">Sélectionner une forme juridique</option>
-                        <option value="EI">Entreprise individuelle (EI)</option>
-                        <option value="SARL">Société à responsabilité limitée (SARL)</option>
-                        <option value="SA">Société anonyme (SA)</option>
-                        <option value="GIE">Groupement d'intérêt économique (GIE)</option>
+                        <option value="" selected disabled> Sélectionner une forme juridique</option>
+                        @each(formeJuridique in formesJuridiques)
+                          <option value="{{ formeJuridique.id }}">{{ formeJuridique.libelle }}</option>
+                        @end
                       </select>
                     </div>
                   </div>
@@ -246,12 +245,10 @@
                               name="domaine_activite"
                               onchange="toggleAutreDomaine()" 
                               required>
-                        <option value="">Sélectionner un domaine</option>
-                        <option value="agriculture">Agriculture</option>
-                        <option value="industrie">Industrie</option>
-                        <option value="services">Services</option>
-                        <option value="commerce">Commerce</option>
-                        <option value="autre">Autre</option>
+                        <option value="" selected disabled>Sélectionner un domaine</option>
+                        @each(domaineActivite in domainesActivites)
+                          <option value="{{ domaineActivite.id }}">{{ domaineActivite.libelle }}</option>
+                        @end
                       </select>
                     </div>
                   </div>
