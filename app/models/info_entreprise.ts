@@ -77,15 +77,23 @@ export default class InfoEntreprise extends BaseModel {
   @column()
   declare renouvellement: number | null
 
+  @column()
+  declare demande : number | null
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
 
-  @belongsTo(() => FormeJuridique)
+  @belongsTo(() => FormeJuridique, {
+    foreignKey: 'forme_juridique_id' // Spécifier explicitement le nom de la colonne
+  })
   declare formeJuridique: BelongsTo<typeof FormeJuridique>
 
-  @belongsTo(() => DomaineActivite)
+  @belongsTo(() => DomaineActivite, {
+    foreignKey: 'domaine_activite_id'
+  })
+
   declare domaineActivite: BelongsTo<typeof DomaineActivite>
 }

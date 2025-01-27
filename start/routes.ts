@@ -19,6 +19,9 @@ import DashboardAdminsController from '#controllers/admin/dashboard_admins_contr
 import LoginController from '#controllers/auth/login_controller';
 import RegistersController from '#controllers/auth/registers_controller';
 import LogoutsController from '#controllers/auth/logouts_controller';
+import InformationEntreprisesController from '#controllers/client/information_entreprises_controller';
+import DocumentLegauxesController from '#controllers/client/document_legauxes_controller';
+import EffectifEntreprisesController from '#controllers/client/effectif_entreprises_controller';
 
 // Routes publiques
 router.on('/').render('accueil/index').as('home')
@@ -55,35 +58,44 @@ router.group(() => {
     .as('dashboard.index')
 
   // Informations entreprise
-  router.get('/entreprise/informations', [NvdemandesController, 'index'])
+  router.get('/entreprise/informations', [InformationEntreprisesController, 'index'])
     .as('entreprise.informations')
 
 
   // Informations entreprise
 
-  router.post('/entreprise/store', [NvdemandesController, 'storeInfomationEntreprise'])
+  router.post('/entreprise/store', [InformationEntreprisesController, 'store'])
     .as('entreprise.informations.store')
 
 
-
-
   // Documents légaux  
-  router.get('/entreprise/documents_legaux', [NvdemandesController, 'documentLegaux'])
+  router.get('/entreprise/documents_legaux', [DocumentLegauxesController, 'index'])
     .as('entreprise.documents_legaux')
+
 
   // Documents légaux
 
-  router.post('/entreprise/documents_legaux/store', [NvdemandesController, 'storeDocumentLegaux'])
+  router.post('/entreprise/documents_legaux/store', [DocumentLegauxesController, 'store'])
     .as('entreprise.documents_legaux.store')
  
 
   // Effectif entreprise
-  router.get('/entreprise/effectif', [NvdemandesController, 'effectifEntreprise'])
+  router.get('/entreprise/effectif', [EffectifEntreprisesController, 'index'])
     .as('entreprise.effectif')
+   
 
   // Ajouter cette nouvelle route
-  router.post('/entreprise/effectif/store', [NvdemandesController, 'storeEffectifEntreprise'])
+  router.post('/entreprise/effectif/store', [EffectifEntreprisesController, 'store'])
     .as('entreprise.effectif.store')
+   
+
+  // Récapitulatif
+  router.get('/entreprise/recapitulatif', [NvdemandesController, 'index'])
+    .as('entreprise.recapitulatif')
+
+  // Route pour la soumission finale de la demande
+  router.post('/entreprise/nouvelle-demande', [NvdemandesController, 'store'])
+    .as('entreprise.nouvelle_demande.store')
 
 })
 .use(middleware.auth()) // Vérifie l'authentification

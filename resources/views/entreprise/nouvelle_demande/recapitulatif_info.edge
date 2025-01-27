@@ -57,23 +57,23 @@
                     <tbody>
                       <tr>
                         <th width="30%">Nom de l'entreprise</th>
-                        <td>[Nom entreprise]</td>
+                        <td>{{infoEntreprise.nom_entreprise}}</td>
                       </tr>
                       <tr>
                         <th>Représentant</th>
-                        <td>[Prénom et Nom]</td>
+                        <td>{{infoEntreprise.nom_representant}} {{infoEntreprise.prenom_representant}}</td>
                       </tr>
                       <tr>
                         <th>Adresse</th>
-                        <td>[Adresse complète]</td>
+                        <td>{{infoEntreprise.adresse}}</td>
                       </tr>
                       <tr>
                         <th>Email</th>
-                        <td>[Email]</td>
+                        <td>{{infoEntreprise.email}}</td>
                       </tr>
                       <tr>
                         <th>Numéros de téléphone</th>
-                        <td>[Numéros]</td>
+                        <td>{{infoEntreprise.telephone}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -107,11 +107,13 @@
                       </tr>
                       <tr>
                         <th>Forme juridique</th>
-                        <td>[Forme juridique]</td>
+                        <td>{{infoEntreprise.formeJuridique ? infoEntreprise.formeJuridique.libelle : ''}}</td>
                       </tr>
                       <tr>
                         <th>Domaine d'activité</th>
-                        <td>[Domaine]</td>
+                        <td>{{infoEntreprise.domaineActivite ? infoEntreprise.domaineActivite.libelle : ''}}
+                          {{infoEntreprise.autre_domaine ? ' - ' + infoEntreprise.autre_domaine : ''}}
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -133,11 +135,11 @@
                     <tbody>
                       <tr>
                         <th width="30%">Employés en CDI</th>
-                        <td>[Nombre]</td>
+                        <td>{{infoEntreprise.nb_cdi}}</td>
                       </tr>
                       <tr>
                         <th>Employés en CDD</th>
-                        <td>[Nombre]</td>
+                        <td>{{infoEntreprise.nb_cdd}}</td>
                       </tr>
                       <tr>
                         <th>Quitus fiscal</th>
@@ -149,11 +151,11 @@
                       </tr>
                       <tr>
                         <th>Nombre de stagiaires souhaités</th>
-                        <td>[Nombre]</td>
+                        <td>{{infoEntreprise.nb_stagiaires}}</td>
                       </tr>
                       <tr>
                         <th>Profils recherchés</th>
-                        <td>[Liste des profils]</td>
+                        <td>{{infoEntreprise.profils_recherches}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -161,6 +163,8 @@
               </div>
 
               <!-- Boutons de navigation -->
+            <form action="{{ route('entreprise.nouvelle_demande.store') }}" method="POST">
+              {{ csrfField() }}  <!-- Utiliser csrfField() au lieu de @csrf -->
               <div class="row justify-content-end mt-4">
                 <div class="col-auto">
                   <button type="submit" class="btn btn-success">
@@ -169,6 +173,7 @@
                   </button>
                 </div>
               </div>
+            </form>
             </div>
           </div>
         </div>

@@ -23,7 +23,8 @@ export default class extends BaseSchema {
       table.string('ninea_file').nullable() // Chemin du fichier
       table.string('declaration_file').nullable() // Chemin du fichier
       table.date('date_adhesion').nullable()
-      table.integer('renouvellement').nullable() // En attente, Validé, Refusé
+      table.integer('demande')
+      table.integer('renouvellement') // En attente, Validé, Refusé
       
       // Clés étrangères
       table.integer('forme_juridique_id')
