@@ -42,7 +42,7 @@ router.group(() => {
   // Autres routes admin...
 
   router.get('/admin/listes', [ListesController, 'index']).as('admin.listes')
-
+ router.get('/admin/listes/create', [ListesController, 'create']).as('admin.listes.create')
 
 
 }).use(middleware.auth()) // Vérifie l'authentification
