@@ -53,15 +53,15 @@
                                     <tr>
 
                                         <th data-field="codeDemande" data-sortable="true">Code Demande</th>
+                                        <th data-field="nomEntreprise" data-sortable="true">Entreprise</th>
+                                        <th data-field="nomRepresentant" data-sortable="true">Nom Représentant</th>
+                                        <th data-field="prenomRepresentant" data-sortable="true">Prénom Représentant</th>
                                         <th data-formatter="rccmFile" data-sortable="true">RCCM</th>
                                         <th data-formatter="nineaFile" data-sortable="true">NINEA</th>
                                         <th data-formatter="quitusFiscal" data-sortable="true">Quitus Fiscal</th>
                                         <th data-formatter="quitusSocial" data-sortable="true">Quitus Social</th>
                                         <th data-formatter="declarationFile" data-sortable="true">Déclaration</th>
                                         <th data-formatter="carteIdentite" data-sortable="true">CNI</th>
-                                        <th data-field="nomEntreprise" data-sortable="true">Entreprise</th>
-                                        <th data-field="nomRepresentant" data-sortable="true">Nom Représentant</th>
-                                        <th data-field="prenomRepresentant" data-sortable="true">Prénom Représentant</th>
                                         <th data-field="etatAcceptation" data-sortable="true">Status demande</th>
                                         <th data-formatter="actionFormatter" data-events="actionEvents"
                                             data-halign="center" data-align="center">Action</th>
@@ -83,6 +83,7 @@
 
     @include('admin/listes/modal_acceptation')
     @include('admin/listes/modal_rejet')
+    @include('admin/listes/modal_information')
     <script>
         // your custom ajax request here
         function ajaxRequest(params) {
@@ -194,22 +195,58 @@
                 var id = row.id;
 
                 $('#ModalAcceptation').modal('show');
-                $.ajax({
-                    type: "GET",
-                    url: "",
-                    success: function (response) {
-
-                        $('#companyId').val(response.Gallery.id);
-                    }
-
-                });
+                $('#companyId').val(id);
             },
 
             'click .rejeterProviders': function (e, value, row, index) {
                 var id = row.id;
                 $('#ModalRejet').modal('show');
-                $('#companyId').val(id);
+                $('#companyIds').val(id);
+            },
+            'click .infoProviders': function(e, value, row, index) {
+                var id = row.id;
+                $('#ModalInformation').modal('show');
+
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('admin.listes.edit', {id: ':id'}) }}".replace(':id', id),
+                    success: function(response) {
+                        // Récupérer l'état de la demande
+                        const demande = response.infoEntreprise.demande;
+                        const rejectMessage = response.infoEntreprise.rejectMessage;
+                        const appointmentDate = response.infoEntreprise.appointmentDate;
+                        
+                        // Afficher la section appropriée selon l'état
+                        if (demande === 2 && appointmentDate) { // Demande acceptée
+                            $('#acceptationInfo').show();
+                            $('#rejetInfo').hide();
+                            // Formater la date de RDV
+                            const rdvDate = new Date(appointmentDate).toLocaleString('fr-FR', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: 'numeric',
+                                minute: 'numeric'
+                            });
+                            $('#dateRdv').text(rdvDate);
+                        } 
+                        else if (demande === 3 && rejectMessage) { // Demande rejetée 
+                            $('#acceptationInfo').hide();
+                            $('#rejetInfo').show();
+                            $('#messageRejet').text(rejectMessage);
+                        }
+                        else { // Autre état
+                            $('#acceptationInfo').hide();
+                            $('#rejetInfo').hide(); 
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        toastr.error('Erreur lors du chargement des informations');
+                    }
+                });
             }
+
         };
 
 
@@ -241,3 +278,7 @@
             toastr.error('Internet connection lost.');
         });
     </script>
+
+
+
+   

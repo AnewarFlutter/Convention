@@ -25,6 +25,8 @@ export default class extends BaseSchema {
       table.date('date_adhesion').nullable()
       table.integer('demande')
       table.integer('renouvellement') // En attente, Validé, Refusé
+      table.dateTime('appointment_date')
+      table.text('reject_message')
       
       // Clés étrangères
       table.integer('forme_juridique_id')

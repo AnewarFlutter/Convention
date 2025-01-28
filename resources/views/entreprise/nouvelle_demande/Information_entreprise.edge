@@ -145,21 +145,7 @@
               <h5 class="mb-0">Informations de l'entreprise</h5>
             </div>
             <div class="card-body p-4">
-              @if(flashMessages.has('success'))
-              <div class="alert alert-success">
-                {{ flashMessages.get('success') }}
-              </div>
-              @endif
-
-              @if(flashMessages.has('errors'))
-              <div class="alert alert-danger">
-                <ul>
-                  @each(error in flashMessages.get('errors'))
-                  <li>{{ error }}</li>
-                  @endeach
-                </ul>
-              </div>
-              @endif
+             
               <form action="{{ route('entreprise.informations.store') }}" method="POST">
                 {{ csrfField() }}
 

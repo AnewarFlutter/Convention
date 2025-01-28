@@ -34,7 +34,7 @@
       </div>
 
       <div class="modal-body p-4">
-        <form action="" method="POST" id="appointmentForm">
+        <form action="{{ route('admin.acceptation') }}" method="POST" id="appointmentForm">
           {{ csrfField() }}
           
           <div class="form-group mb-4">
@@ -43,7 +43,7 @@
             </label>
             <div class="input-group input-group-static">
               <input 
-                type="date" 
+                type="datetime-local" 
                 id="appointmentDate"
                 name="appointment_date"
                 class="form-control"

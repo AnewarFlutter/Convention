@@ -41,8 +41,17 @@ router.group(() => {
     .as('admin.dashboard')
   // Autres routes admin...
 
+  // Liste
+  router.post('/admin/acception', [ListesController, 'acceptationStore']).as('admin.acceptation')
+
+  router.post('/admin/rejet', [ListesController, 'rejetStore']).as('admin.rejet')
+
   router.get('/admin/listes', [ListesController, 'index']).as('admin.listes')
- router.get('/admin/listes/create', [ListesController, 'create']).as('admin.listes.create')
+
+  router.get('/admin/listes/create', [ListesController, 'create']).as('admin.listes.create')
+
+  router.get('/admin/listes/:id/edit', [ListesController, 'edit']).as('admin.listes.edit')
+
 
 
 }).use(middleware.auth()) // Vérifie l'authentification

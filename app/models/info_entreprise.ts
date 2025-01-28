@@ -78,6 +78,13 @@ export default class InfoEntreprise extends BaseModel {
   declare renouvellement: number | null
 
   @column()
+  declare appointment_date: string | null
+
+  @column()
+
+  declare reject_message: string | null
+
+  @column()
   declare demande : number | null
 
   @column.dateTime({ autoCreate: true })

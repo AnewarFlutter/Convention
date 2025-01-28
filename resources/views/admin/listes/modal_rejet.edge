@@ -34,7 +34,7 @@
       </div>
 
       <div class="modal-body p-4">
-        <form action="" method="POST" id="rejectForm">
+        <form action="{{ route('admin.rejet') }}" method="POST" id="rejectForm">
           {{ csrfField() }}
           
           <div class="form-group mb-4">
@@ -57,7 +57,7 @@
             </div>
           </div>
 
-          <input type="hidden" id="companyId" name="company_id"/>
+          <input type="hidden" id="companyIds" name="company_id"/>
         </form>
       </div>
 

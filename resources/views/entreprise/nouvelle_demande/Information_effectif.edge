@@ -130,13 +130,7 @@
                         <div class="card-header p-3">
                             <h5 class="mb-0">Information sur l'Effectif et les Documents</h5>
                         </div>
-                        @if(flashMessages.has('errors'))
-                        <div class="alert alert-danger">
-                            @each(error in flashMessages.get('errors'))
-                            <p>{{ error }}</p>
-                            @end
-                        </div>
-                        @endif
+                       
                         <div class="card-body p-4">
                             <form action="{{ route('entreprise.effectif.store') }}" method="POST"
                                 enctype="multipart/form-data">
