@@ -87,6 +87,40 @@
     width: 47px;
     transform: rotate(-45deg);
   }
+  .animate-bounce {
+    animation: bounce 2s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+  
+  /* Animation de glissement vers le haut */
+  .animate-slide-up {
+    animation: slideUp 1s ease-out forwards;
+    opacity: 0;
+  }
+  
+  @keyframes slideUp {
+    from {
+      transform: translateY(50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Animation au survol du bouton */
+  .hover\:scale-105:hover {
+    transform: scale(1.05);
+  }
+  
+  .transition-transform {
+    transition: transform 0.3s ease;
+  }
 </style>
 
 <body class="g-sidenav-show  bg-gray-100">
@@ -110,7 +144,7 @@
       </div>
     </nav>
 
-    @if(!infoEntreprise || infoEntreprise?.demande != 1)
+    @if(!infoEntreprise || infoEntreprise?.demande == 0 || infoEntreprise?.demande == 3)
     <!-- End Navbar -->
     <div class="container-fluid py-2">
 
@@ -118,7 +152,43 @@
       <div class="row mt-4">
         <!-- Cards d'étapes -->
         <div class="col-12 mb-4">
-          <div class="d-flex justify-content-between">
+          @if(infoEntreprise?.demande == 3)
+        <div class="container-fluid py-4 ">
+          <div class="row justify-content-center mt-5">
+            <div class="col-12 col-md-8">
+              <div class="card border-0 shadow-lg">
+                <div class="card-body p-5">
+                  <div class="text-center mb-4">
+                    <i class="material-symbols-rounded text-danger animate-bounce" style="font-size: 64px;">error</i>
+                  </div>
+                  <div class="alert alert-danger border-0 shadow-sm">
+                    <h4 class="alert-heading text-center text-white mb-3">
+                      <i class="material-symbols-rounded me-2 fs-3">cancel</i>
+                      Demande rejetée
+                    </h4>
+                    <p class="text-center fs-5 mb-3 text-white">
+                      Motif du rejet : {{ infoEntreprise.reject_message }}  
+                    </p>
+                  </div>
+                  <hr class="border-danger">
+                  <p class="text-center mb-0 fs-6 text-muted">
+                    <i class="material-symbols-rounded me-2 align-middle text-muted">info</i>
+                    Vous pouvez soumettre une nouvelle demande en corrigeant les points mentionnés.
+                  </p>
+                  <div class="text-center mt-5 animate-slide-up">
+                    <a href="{{ route('entreprise.informations') }}#nouvelleDemande" class="btn btn-danger btn-lg px-5 shadow-sm hover:scale-105 transition-transform">
+                      <i class="material-symbols-rounded me-2">edit</i>
+                      Nouvelle demande
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+       <br><br><br><br><br><br><br>
+        @end
+          <div class="d-flex justify-content-between m">
             <!-- Étape 1 -->
             <div class="card col-2 active bg-gradient-success">
               <div class="card-body text-center p-3">
@@ -137,15 +207,15 @@
             <!-- Répéter pour étapes 3-5 -->
           </div>
         </div>
-
+        
         <!-- Formulaire -->
-        <div class="col-12">
+        <div class="col-12 ">
           <div class="card">
             <div class="card-header p-3">
               <h5 class="mb-0">Informations de l'entreprise</h5>
             </div>
-            <div class="card-body p-4">
-             
+            
+            <div class="card-body p-4" id="nouvelleDemande">
               <form action="{{ route('entreprise.informations.store') }}" method="POST">
                 {{ csrfField() }}
 
@@ -239,7 +309,9 @@
 
       @include('entreprise/components/footer')
     </div>
-    @else
+
+
+    @elseif(infoEntreprise?.demande == 1)
     <div class="container-fluid py-4">
       <div class="row justify-content-center mt-5">
         <div class="col-12 col-md-8">
@@ -279,7 +351,46 @@
         </div>
       </div>
     </div>
-
+    @elseif(infoEntreprise?.demande == 2)
+    <div class="container-fluid py-4">
+      <div class="row justify-content-center mt-5">
+        <div class="col-12 col-md-8">
+          <div class="card border-0 shadow-lg">
+            <div class="card-body p-5">
+              <div class="text-center mb-4">
+                <div class="success-checkmark">
+                  <div class="check-icon">
+                    <span class="icon-line line-tip"></span>
+                    <span class="icon-line line-long"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="alert alert-success border-0 shadow-sm">
+                <h4 class="alert-heading text-center text-white mb-3">
+                  <i class="material-symbols-rounded me-2 fs-3">event</i>
+                  Demande acceptée !
+                </h4>
+                <p class="text-center fs-5 mb-3 text-white">
+                  Votre rendez-vous est prévu pour le : {{ infoEntreprise.appointmentDate }}
+                </p>
+              </div>
+              <hr class="border-success">
+              <p class="text-center mb-0 fs-6 text-muted">
+                <i class="material-symbols-rounded me-2 align-middle text-muted">info</i>
+                Veuillez vous présenter à l'heure indiquée avec tous les documents originaux.
+              </p>
+              <div class="text-center mt-5">
+                <a href="{{ route('dashboard.index') }}" class="btn btn-success btn-lg px-5 shadow-sm">
+                  <i class="material-symbols-rounded me-2">dashboard</i>
+                  Retour au tableau de bord
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     @end
 
   </main>

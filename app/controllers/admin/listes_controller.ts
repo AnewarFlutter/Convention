@@ -171,7 +171,83 @@ async rejetStore({ request, response, session }: HttpContext) {
     }
   }
 
-  /**
+// Fonction pour compter le total des entreprises
+async countTotalEntreprises({ response }: HttpContext) {
+  try {
+    const total = await InfoEntreprise.query().count('* as total')
+    return response.json({
+      status: 200,
+      total: Number(total[0].$extras.total),
+      message: 'Total des entreprises récupéré avec succès'
+    })
+  } catch (error) {
+    return response.status(500).json({
+      status: 500,
+      message: 'Erreur lors du comptage des entreprises',
+      error: error.message
+    })
+  }
+}
+
+// Fonction pour compter les demandes en cours
+async countDemandesEnCours({ response }: HttpContext) {
+  try {
+    const enCours = await InfoEntreprise.query()
+      .where('demande', 1)
+      .count('* as total')
+    return response.json({
+      status: 200,
+      total: Number(enCours[0].$extras.total),
+      message: 'Total des demandes en cours récupéré avec succès'
+    })
+  } catch (error) {
+    return response.status(500).json({
+      status: 500,
+      message: 'Erreur lors du comptage des demandes en cours',
+      error: error.message
+    })
+  }
+}
+
+// Fonction pour compter les demandes acceptées
+async countDemandesAcceptees({ response }: HttpContext) {
+  try {
+    const acceptees = await InfoEntreprise.query()
+      .where('demande', 2)
+      .count('* as total')
+    return response.json({
+      status: 200,
+      total: Number(acceptees[0].$extras.total),
+      message: 'Total des demandes acceptées récupéré avec succès'
+    })
+  } catch (error) {
+    return response.status(500).json({
+      status: 500,
+      message: 'Erreur lors du comptage des demandes acceptées',
+      error: error.message
+    })
+  }
+}
+
+// Fonction pour compter les demandes rejetées
+async countDemandesRejetees({ response }: HttpContext) {
+  try {
+    const rejetees = await InfoEntreprise.query()
+      .where('demande', 3)
+      .count('* as total')
+    return response.json({
+      status: 200,
+      total: Number(rejetees[0].$extras.total),
+      message: 'Total des demandes rejetées récupéré avec succès'
+    })
+  } catch (error) {
+    return response.status(500).json({
+      status: 500,
+      message: 'Erreur lors du comptage des demandes rejetées',
+      error: error.message
+    })
+  }
+}  /**
    * Handle form submission for the edit action
    */
   async update({ params }: HttpContext) {}

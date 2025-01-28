@@ -52,7 +52,21 @@ router.group(() => {
 
   router.get('/admin/listes/:id/edit', [ListesController, 'edit']).as('admin.listes.edit')
 
+// Route pour le total des entreprises
+router.get('/admin/stats/total', [ListesController, 'countTotalEntreprises'])
+.as('admin.stats.total')
 
+// Route pour les demandes en cours
+router.get('/admin/stats/encours', [ListesController, 'countDemandesEnCours'])
+.as('admin.stats.encours')
+
+// Route pour les demandes acceptées  
+router.get('/admin/stats/acceptees', [ListesController, 'countDemandesAcceptees'])
+.as('admin.stats.acceptees')
+
+// Route pour les demandes rejetées
+router.get('/admin/stats/rejetees', [ListesController, 'countDemandesRejetees'])
+.as('admin.stats.rejetees')
 
 }).use(middleware.auth()) // Vérifie l'authentification
 .use(middleware.admin()) // Vérifie si admin

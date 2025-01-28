@@ -396,13 +396,10 @@
                   </div>
                   <div class="stat-details">
                     <p class="stat-label">Total Entreprises</p>
-                    <h3 class="stat-value" data-count="2500">2,500</h3>
+                    <h3 class="stat-value" data-count="2500" id="totalEntreprise">0</h3>
                     <div class="trend-indicator">
-                      <span class="trend-badge success">
-                        <i class="fas fa-arrow-up"></i>
-                        +55%
-                      </span>
-                      <span class="trend-period">vs mois dernier</span>
+                      
+                     
                     </div>
                   </div>
                 </div>
@@ -421,13 +418,10 @@
                   </div>
                   <div class="stat-details">
                     <p class="stat-label">Demandes en cours</p>
-                    <h3 class="stat-value" data-count="1500">1,500</h3>
+                    <h3 class="stat-value" data-count="1500" id="demandeEnCours">0</h3>
                     <div class="trend-indicator">
-                      <span class="trend-badge success">
-                        <i class="fas fa-arrow-up"></i>
-                        +3%
-                      </span>
-                      <span class="trend-period">cette semaine</span>
+                      
+                      
                     </div>
                   </div>
                 </div>
@@ -444,13 +438,9 @@
                   </div>
                   <div class="stat-details">
                     <p class="stat-label">Demandes acceptées</p>
-                    <h3 class="stat-value" data-count="1500">1,500</h3>
+                    <h3 class="stat-value" data-count="1500" id="demandeAccepte">0</h3>
                     <div class="trend-indicator">
-                      <span class="trend-badge success">
-                        <i class="fas fa-arrow-up"></i>
-                        +3%
-                      </span>
-                      <span class="trend-period">cette semaine</span>
+                      
                     </div>
                   </div>
                 </div>
@@ -468,13 +458,9 @@
                   </div>
                   <div class="stat-details">
                     <p class="stat-label">Demandes rejetées</p>
-                    <h3 class="stat-value" data-count="75">75</h3>
+                    <h3 class="stat-value" data-count="75" id="demandeRejete">0</h3>
                     <div class="trend-indicator">
-                      <span class="trend-badge danger">
-                        <i class="fas fa-arrow-down"></i>
-                        -2%
-                      </span>
-                      <span class="trend-period">depuis dernier mois</span>
+
                     </div>
                   </div>
                 </div>
@@ -494,6 +480,94 @@
   </main>
 
   @include('admin/layout/script')
+  <script>
+    // Fonction pour animer le compteur
+    function animateCounter(element, target) {
+      let current = 0;
+      const duration = 1000; // 2 secondes
+      const step = target / (duration / 16); // 60 FPS
+      
+      const animate = () => {
+        current += step;
+        if (current <= target) {
+          element.textContent = Math.round(current);
+          requestAnimationFrame(animate);
+        } else {
+          element.textContent = target;
+        }
+      };
+      animate();
+    }
+    
+    // Fonction pour charger les statistiques
+    function loadStats() {
+      // Total Entreprises
+      $.ajax({
+        url: '/admin/stats/total',
+        method: 'GET',
+        success: function(response) {
+          if (response.status === 200) {
+            const element = document.getElementById('totalEntreprise');
+            animateCounter(element, response.total);
+          }
+        },
+        error: function(error) {
+          console.error('Erreur lors du chargement du total:', error);
+        }
+      });
+    
+      // Demandes en cours
+      $.ajax({
+        url: '/admin/stats/encours',
+        method: 'GET',
+        success: function(response) {
+          if (response.status === 200) {
+            const element = document.getElementById('demandeEnCours');
+            animateCounter(element, response.total);
+          }
+        },
+        error: function(error) {
+          console.error('Erreur lors du chargement des demandes en cours:', error);
+        }
+      });
+    
+      // Demandes acceptées
+      $.ajax({
+        url: '/admin/stats/acceptees',
+        method: 'GET',
+        success: function(response) {
+          if (response.status === 200) {
+            const element = document.getElementById('demandeAccepte');
+            animateCounter(element, response.total);
+          }
+        },
+        error: function(error) {
+          console.error('Erreur lors du chargement des demandes acceptées:', error);
+        }
+      });
+    
+      // Demandes rejetées
+      $.ajax({
+        url: '/admin/stats/rejetees',
+        method: 'GET',
+        success: function(response) {
+          if (response.status === 200) {
+            const element = document.getElementById('demandeRejete');
+            animateCounter(element, response.total);
+          }
+        },
+        error: function(error) {
+          console.error('Erreur lors du chargement des demandes rejetées:', error);
+        }
+      });
+    }
+    
+    // Charger les stats au chargement de la page
+    document.addEventListener('DOMContentLoaded', loadStats);
+    
+    // Actualiser les stats toutes les 5 minutes
+    setInterval(loadStats, 300000);
+    </script>
 </body>
 
 </html>
